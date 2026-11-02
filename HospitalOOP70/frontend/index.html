@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Hospital Management System | HospitalOOP70</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232878DF'/><path d='M35 50 h30 M50 35 v30' stroke='white' stroke-width='14' stroke-linecap='round'/></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- ==================== TOP HEADER ==================== -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-icon">+</div>
+                <div class="brand-info">
+                    <h1>HospitalOOP70</h1>
+                    <p>Government Hospital System</p>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="global-search-input" placeholder="Search Patient ID / Name..." aria-label="Search Patients">
+                <button id="global-search-btn">Search</button>
+            </div>
+
+            <div class="header-actions">
+                <div id="db-status-badge" class="badge-pill badge-db-online">● Checking DB...</div>
+                <div id="header-clock" class="header-clock">--:--:--</div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" id="header-user-avatar">A</div>
+                    <div>
+                        <div class="user-role-text" id="header-user-name">Administrator</div>
+                        <span class="status-pill status-active" id="header-user-role" style="font-size: 9px; padding: 2px 6px;">ADMIN</span>
+                    </div>
+                    <button class="btn btn-sm btn-secondary" onclick="Auth.logout()" style="margin-left: 8px;">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== LEFT SIDEBAR ==================== -->
+        <aside class="app-sidebar">
+            <div class="sidebar-heading">General</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#dashboard" class="nav-link active" id="nav-dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#registration" class="nav-link" id="nav-registration">
+                        <span class="nav-icon">📝</span>
+                        <span class="nav-label">Patient Registration</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#records" class="nav-link" id="nav-records">
+                        <span class="nav-icon">📁</span>
+                        <span class="nav-label">Patient Records</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-heading">Clinical Care</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#priority-queue" class="nav-link" id="nav-priority-queue">
+                        <span class="nav-icon">⏳</span>
+                        <span class="nav-label">Priority Queue</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#opd" class="nav-link" id="nav-opd">
+                        <span class="nav-icon">🩺</span>
+                        <span class="nav-label">OPD Consultation</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#workflow" class="nav-link" id="nav-workflow">
+                        <span class="nav-icon">🔄</span>
+                        <span class="nav-label">OPD to IPD Workflow</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#emergency" class="nav-link" id="nav-emergency">
+                        <span class="nav-icon">🚨</span>
+                        <span class="nav-label">Emergency Registration</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-heading">Inpatient & Wards</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#admissions" class="nav-link" id="nav-admissions">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">Admission Requests</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#beds" class="nav-link" id="nav-beds">
+                        <span class="nav-icon">🛏️</span>
+                        <span class="nav-label">Bed Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#discharge" class="nav-link" id="nav-discharge">
+                        <span class="nav-icon">🚪</span>
+                        <span class="nav-label">Patient Discharge</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-heading">Hospital Network</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#doctors" class="nav-link" id="nav-doctors">
+                        <span class="nav-icon">👨‍⚕️</span>
+                        <span class="nav-label">Doctor Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hospitals" class="nav-link" id="nav-hospitals">
+                        <span class="nav-icon">🏥</span>
+                        <span class="nav-label">Hospital Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#referrals" class="nav-link" id="nav-referrals">
+                        <span class="nav-icon">🗺️</span>
+                        <span class="nav-label">Hospital Referrals</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-heading">Records & Audit</div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="#history" class="nav-link" id="nav-history">
+                        <span class="nav-icon">📜</span>
+                        <span class="nav-label">Patient History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#reports" class="nav-link" id="nav-reports">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-label">Reports & Statistics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#settings" class="nav-link" id="nav-settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-label">System Settings</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                HospitalOOP70 Web Portal v2.5<br>
+                Government Health Informatics
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTENT AREA ==================== -->
+        <main class="app-main">
+
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="view-dashboard" class="view-section">
+                <div class="page-header">
+                    <div>
+                        <h2>Hospital Operational Dashboard</h2>
+                        <p>Real-time healthcare facility metrics, bed telemetry and clinical summary.</p>
+                    </div>
+                </div>
+
+                <div class="metrics-grid-4">
+                    <div class="metric-card metric-blue">
+                        <div class="metric-label">Total Registered Patients</div>
+                        <div class="metric-val" id="dash-total-patients">0</div>
+                        <div class="metric-sub">OPD + Inpatient Directory</div>
+                    </div>
+                    <div class="metric-card metric-amber">
+                        <div class="metric-label">OPD Queue Waiting</div>
+                        <div class="metric-val" id="dash-opd-waiting">0</div>
+                        <div class="metric-sub">Pending Medical Consultation</div>
+                    </div>
+                    <div class="metric-card metric-teal">
+                        <div class="metric-label">Active Inpatients</div>
+                        <div class="metric-val" id="dash-inpatients">0</div>
+                        <div class="metric-sub">Admitted in Hospital Wards</div>
+                    </div>
+                    <div class="metric-card metric-green">
+                        <div class="metric-label">Available Ward Beds</div>
+                        <div class="metric-val" id="dash-available-beds">0</div>
+                        <div class="metric-sub">Ready for Immediate Admission</div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid-4">
+                    <div class="metric-card metric-red">
+                        <div class="metric-label">Critical Emergency Triage</div>
+                        <div class="metric-val" id="dash-critical-triage">0</div>
+                        <div class="metric-sub">Severity Level 1 & 2</div>
+                    </div>
+                    <div class="metric-card metric-purple">
+                        <div class="metric-label">Physicians On-Duty</div>
+                        <div class="metric-val" id="dash-total-doctors">0</div>
+                        <div class="metric-sub">Active Clinical Shifts</div>
+                    </div>
+                    <div class="metric-card metric-blue">
+                        <div class="metric-label">Bed Occupancy Rate</div>
+                        <div class="metric-val" id="dash-occupancy-rate">0%</div>
+                        <div class="metric-sub">Inpatient Ward Utilization</div>
+                    </div>
+                    <div class="metric-card metric-teal">
+                        <div class="metric-label">Inter-Hospital Referrals</div>
+                        <div class="metric-val" id="dash-total-referrals">0</div>
+                        <div class="metric-sub">Regional Network Transfers</div>
+                    </div>
+                </div>
+
+                <!-- Bed Occupancy Indicator -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>Facility Bed Utilization Progress</span>
+                        <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">Threshold Target: &lt; 85%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="dash-occupancy-bar" class="progress-bar-fill progress-bar-green" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <!-- Two Column Dashboard Layout -->
+                <div class="two-col-grid">
+                    <div class="card">
+                        <div class="card-title">
+                            <span>Recent Patient Admissions & Consults</span>
+                            <a href="#records" class="btn btn-sm btn-secondary">View Directory</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Patient ID</th>
+                                        <th>Full Name</th>
+                                        <th>Visit Type</th>
+                                        <th>Triage</th>
+                                        <th>Attending Doctor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-recent-patients-tbody">
+                                    <tr><td colspan="5" style="text-align:center;">Loading recent activity...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">
+                            <span>Clinical Audit & Activity Stream</span>
+                            <a href="#history" class="btn btn-sm btn-secondary">Audit Trail</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Action</th>
+                                        <th>Patient ID</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-activity-tbody">
+                                    <tr><td colspan="4" style="text-align:center;">Loading audit logs...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PATIENT REGISTRATION VIEW -->
+            <section id="view-registration" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Patient Registration</h2>
+                        <p>Intake registration for Outpatient (OPD) and Emergency visits. Note: Direct IPD admission is restricted by policy.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-title">New Patient Intake Form</div>
+                    <form id="registration-form">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="reg-patient-id">Patient ID</label>
+                                <input type="text" id="reg-patient-id" class="form-control" placeholder="PAT-101" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-fullname">Full Name *</label>
+                                <input type="text" id="reg-fullname" class="form-control" placeholder="e.g. Ramesh Kumar" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="reg-age">Age *</label>
+                                <input type="number" id="reg-age" class="form-control" min="0" max="130" value="35" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-gender">Gender</label>
+                                <select id="reg-gender" class="form-control">
+                                    <option value="M">Male (M)</option>
+                                    <option value="F">Female (F)</option>
+                                    <option value="O">Other (O)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="reg-contact">Contact Phone Number *</label>
+                                <input type="tel" id="reg-contact" class="form-control" placeholder="e.g. 9876543210" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-visit-type">Initial Visit Type * (OPD / Emergency Only)</label>
+                                <select id="reg-visit-type" class="form-control" required>
+                                    <option value="OPD" selected>OPD - Outpatient Department</option>
+                                    <option value="EMERGENCY">Emergency Department</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="reg-triage">Triage Severity Priority</label>
+                                <select id="reg-triage" class="form-control">
+                                    <option value="1">Level 1 - Resuscitation (Immediate Life Threat)</option>
+                                    <option value="2">Level 2 - Emergent (Critical Condition)</option>
+                                    <option value="3" selected>Level 3 - Urgent (Moderate Distress)</option>
+                                    <option value="4">Level 4 - Less Urgent (Mild Symptoms)</option>
+                                    <option value="5">Level 5 - Non-Urgent (Routine Consultation)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="reg-assigned-doctor">Assigned Physician</label>
+                                <select id="reg-assigned-doctor" class="form-control">
+                                    <option value="">Loading doctors...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg-symptoms">Chief Complaints & Clinical Symptoms</label>
+                            <textarea id="reg-symptoms" class="form-control" placeholder="Describe symptoms, vital signs, allergies..."></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="reset" class="btn btn-secondary">Clear Fields</button>
+                            <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-lg">Register Patient</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 3. PATIENT RECORDS VIEW -->
+            <section id="view-records" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Patient Medical Directory</h2>
+                        <p>Complete searchable registry of registered patients, clinical status, and demographics.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+                        <div style="display:flex; gap:10px; align-items:center; flex:1; max-width:480px;">
+                            <input type="text" id="records-search-input" class="form-control" placeholder="Search by ID, Full Name, Contact...">
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <label style="font-size:12px; font-weight:700;">Filter Visit Type:</label>
+                            <select id="records-type-filter" class="form-control" style="width:160px;">
+                                <option value="ALL">All Records</option>
+                                <option value="OPD">OPD Only</option>
+                                <option value="EMERGENCY">Emergency Only</option>
+                                <option value="ADMITTED">Admitted (IPD)</option>
+                                <option value="DISCHARGED">Discharged</option>
+                            </select>
+                            <button class="btn btn-secondary" onclick="App.loadRecords()">Refresh</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Patient ID</th>
+                                    <th>Full Name</th>
+                                    <th>Age / Sex</th>
+                                    <th>Contact</th>
+                                    <th>Visit Type</th>
+                                    <th>Status</th>
+                                    <th>Physician</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="records-table-tbody">
+                                <tr><td colspan="8" style="text-align:center;">Loading patient records...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. PRIORITY QUEUE VIEW -->
+            <section id="view-priority-queue" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Dynamic Priority Queue & Triage Desk</h2>
+                        <p>Intelligent triage calculation combining urgency score and waiting elapsed time.</p>
+                    </div>
+                    <div>
+                        <button id="queue-call-next-btn" class="btn btn-danger btn-lg">📢 Call Next Patient</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Live Waiting Queue</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Queue Pos</th>
+                                    <th>Patient ID</th>
+                                    <th>Full Name</th>
+                                    <th>Visit Type</th>
+                                    <th>Triage Level</th>
+                                    <th>Calculated Priority Score</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="queue-table-tbody">
+                                <tr><td colspan="7" style="text-align:center;">Loading triage queue...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. OPD CONSULTATION VIEW -->
+            <section id="view-opd" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Outpatient (OPD) Medical Consultation</h2>
+                        <p>Clinical assessment desk, diagnosis notes, e-prescriptions, and inpatient admission referral.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 850px; margin: 0 auto;">
+                    <div class="card-title">OPD Clinical Examination Form</div>
+                    <form id="opd-consultation-form">
+                        <div class="form-group">
+                            <label class="form-label" for="opd-patient-select">Select Patient From Waiting Queue *</label>
+                            <select id="opd-patient-select" class="form-control" required>
+                                <option value="">Loading OPD waiting patients...</option>
+                            </select>
+                            <div id="opd-pt-details" style="font-size:12px; color:var(--primary-blue); font-weight:600; margin-top:4px;"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="opd-doctor-select">Attending Consulting Doctor *</label>
+                            <select id="opd-doctor-select" class="form-control" required>
+                                <option value="">Loading doctors...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="opd-diagnosis">Clinical Diagnosis *</label>
+                            <input type="text" id="opd-diagnosis" class="form-control" placeholder="e.g. Acute Bronchitis / Severe Dehydration" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="opd-notes">Clinical Examination & Observation Notes</label>
+                            <textarea id="opd-notes" class="form-control" placeholder="Enter clinical notes, BP, Pulse, SPO2, physical findings..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="opd-prescription">Medical Prescription & Instructions</label>
+                            <textarea id="opd-prescription" class="form-control" placeholder="Rx: Medications, dosage, frequency, dietary guidance..."></textarea>
+                        </div>
+
+                        <div class="form-actions" style="justify-content:space-between;">
+                            <button type="button" id="opd-recommend-ipd-btn" class="btn btn-danger btn-lg">
+                                🏥 Recommend IPD Inpatient Admission
+                            </button>
+                            <div style="display:flex; gap:10px;">
+                                <button type="reset" class="btn btn-secondary">Clear</button>
+                                <button type="submit" class="btn btn-primary btn-lg">Save Consultation</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 6. OPD TO IPD WORKFLOW VIEW -->
+            <section id="view-workflow" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>OPD to IPD Clinical Transition Workflow</h2>
+                        <p>Strict multi-stage patient workflow from outpatient consultation to inpatient bed admission.</p>
+                    </div>
+                </div>
+
+                <!-- 6-Stage Stepper -->
+                <div class="card">
+                    <div class="card-title">Admission Lifecycle Pipeline</div>
+                    <div class="stepper-container">
+                        <div class="step-item completed">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">1. OPD Consultation</div>
+                        </div>
+                        <div class="step-item completed">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">2. Clinical Assessment</div>
+                        </div>
+                        <div class="step-item active">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">3. Bed Evaluation</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">4. Inpatient Request</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">5</div>
+                            <div class="step-label">5. Bed Allocation</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-circle">6</div>
+                            <div class="step-label">6. Ward Admitted</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Patients In Admission Pipeline</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Patient</th>
+                                    <th>Urgency</th>
+                                    <th>Required Bed</th>
+                                    <th>Status</th>
+                                    <th>Workflow Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workflow-requests-tbody">
+                                <tr><td colspan="6" style="text-align:center;">Loading admission pipeline...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. EMERGENCY REGISTRATION VIEW -->
+            <section id="view-emergency" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Emergency Department Registration</h2>
+                        <p>Rapid intake triage for acute and resuscitation trauma cases. Automatic priority escalation.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 800px; margin: 0 auto; border-top: 4px solid var(--error-red);">
+                    <div class="card-title" style="color:var(--error-red);">🚨 Rapid Emergency Intake</div>
+                    <form id="emergency-form">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="emg-patient-id">Emergency Case ID</label>
+                                <input type="text" id="emg-patient-id" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="emg-fullname">Patient Name *</label>
+                                <input type="text" id="emg-fullname" class="form-control" placeholder="Name or Unidentified Trauma Patient" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="emg-age">Estimated Age *</label>
+                                <input type="number" id="emg-age" class="form-control" min="0" max="130" value="40" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="emg-gender">Gender</label>
+                                <select id="emg-gender" class="form-control">
+                                    <option value="M">Male (M)</option>
+                                    <option value="F">Female (F)</option>
+                                    <option value="O">Other (O)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="emg-triage">Emergency Triage Severity Level *</label>
+                                <select id="emg-triage" class="form-control" style="border-color:var(--error-red); font-weight:700;">
+                                    <option value="1" selected>Level 1 - Resuscitation (Immediate Life Threat)</option>
+                                    <option value="2">Level 2 - Emergent (Critical / Severe Instability)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="emg-assigned-doctor">Emergency Attending Doctor</label>
+                                <select id="emg-assigned-doctor" class="form-control">
+                                    <option value="">Loading doctors...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="emg-symptoms">Emergency Trauma / Chief Complaint *</label>
+                            <textarea id="emg-symptoms" class="form-control" placeholder="State trauma condition, Glasgow Coma Scale, oxygen saturation, severe injuries..." required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger btn-lg btn-block">
+                                🚨 Process Immediate Emergency Registration
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 8. ADMISSION REQUESTS VIEW -->
+            <section id="view-admissions" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Inpatient Admission Requests</h2>
+                        <p>Manage, review, and allocate beds for approved inpatient admission orders.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Pending Inpatient Requests</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Patient ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Urgency</th>
+                                    <th>Bed Type</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admissions-table-tbody">
+                                <tr><td colspan="7" style="text-align:center;">Loading admission requests...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. BED MANAGEMENT VIEW -->
+            <section id="view-beds" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Hospital Bed & Ward Management</h2>
+                        <p>Real-time occupancy monitoring, ward sanitization tracking, and capacity management.</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" onclick="App.loadBeds()">Refresh Telemetry</button>
+                    </div>
+                </div>
+
+                <div class="metrics-grid-6">
+                    <div class="metric-card metric-blue">
+                        <div class="metric-label">Total Beds</div>
+                        <div class="metric-val" id="bed-stat-total">0</div>
+                    </div>
+                    <div class="metric-card metric-green">
+                        <div class="metric-label">Available</div>
+                        <div class="metric-val" id="bed-stat-available">0</div>
+                    </div>
+                    <div class="metric-card metric-amber">
+                        <div class="metric-label">Occupied</div>
+                        <div class="metric-val" id="bed-stat-occupied">0</div>
+                    </div>
+                    <div class="metric-card metric-teal">
+                        <div class="metric-label">Cleaning</div>
+                        <div class="metric-val" id="bed-stat-cleaning">0</div>
+                    </div>
+                    <div class="metric-card metric-red">
+                        <div class="metric-label">Maintenance</div>
+                        <div class="metric-val" id="bed-stat-maint">0</div>
+                    </div>
+                    <div class="metric-card metric-purple">
+                        <div class="metric-label">Reserved</div>
+                        <div class="metric-val" id="bed-stat-reserved">0</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Hospital Ward Beds Inventory</div>
+                    <div id="beds-card-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:14px;">
+                        <div style="grid-column:1/-1; text-align:center;">Loading ward inventory...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. DOCTOR MANAGEMENT VIEW -->
+            <section id="view-doctors" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Medical Staff & Physician Management</h2>
+                        <p>Hospital doctor roster, specialty departments, and on-duty availability controls.</p>
+                    </div>
+                    <div>
+                        <button id="add-doctor-btn" class="btn btn-primary">➕ Add Physician</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Doctor Roster & Shifts</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Doctor ID</th>
+                                    <th>Physician Name</th>
+                                    <th>Specialty Department</th>
+                                    <th>Assigned Facility</th>
+                                    <th>Duty Status</th>
+                                    <th>Shift Control</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctors-table-tbody">
+                                <tr><td colspan="6" style="text-align:center;">Loading doctors...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. HOSPITAL NETWORK VIEW -->
+            <section id="view-hospitals" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Government Hospital Network Facilities</h2>
+                        <p>Regional public health network directory, bed capacities, and emergency helplines.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Network Facilities Directory</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Hospital ID</th>
+                                    <th>Hospital Name</th>
+                                    <th>Location</th>
+                                    <th>Bed Capacity</th>
+                                    <th>Helpline</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hospitals-table-tbody">
+                                <tr><td colspan="6" style="text-align:center;">Loading hospital facilities...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. PATIENT DISCHARGE VIEW -->
+            <section id="view-discharge" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Inpatient Discharge Management</h2>
+                        <p>Formal patient discharge processing, bed release, and discharge clinical summary.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 850px; margin: 0 auto;">
+                    <div class="card-title">Process Inpatient Discharge</div>
+                    <form id="discharge-form">
+                        <div class="form-group">
+                            <label class="form-label" for="discharge-patient-select">Select Admitted Inpatient *</label>
+                            <select id="discharge-patient-select" class="form-control" required>
+                                <option value="">Loading admitted inpatients...</option>
+                            </select>
+                        </div>
+
+                        <!-- Admitted Patient Summary Card -->
+                        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:12px; margin-bottom:14px; font-size:12px; display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+                            <div>Patient ID: <strong id="disc-info-id">-</strong></div>
+                            <div>Name: <strong id="disc-info-name">-</strong></div>
+                            <div>Assigned Bed: <strong id="disc-info-bed">-</strong></div>
+                            <div>Attending: <strong id="disc-info-doctor">-</strong></div>
+                            <div>Admission Date: <strong id="disc-info-admit-date">-</strong></div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="discharge-condition">Discharge Condition</label>
+                                <select id="discharge-condition" class="form-control">
+                                    <option value="STABLE">Recovered / Clinically Stable</option>
+                                    <option value="IMPROVED">Significantly Improved</option>
+                                    <option value="REFERRED">Referred to Specialty Tertiary Care</option>
+                                    <option value="LAMA">Left Against Medical Advice (LAMA)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="discharge-followup">Follow-Up Schedule</label>
+                                <input type="text" id="discharge-followup" class="form-control" placeholder="e.g. In 7 days at OPD Room 4">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="discharge-notes">Clinical Discharge Summary *</label>
+                            <textarea id="discharge-notes" class="form-control" placeholder="Summary of hospital course, discharge medications, post-discharge restrictions..." required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger btn-lg">🚪 Process Patient Discharge & Free Bed</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 13. HOSPITAL REFERRALS & DIJKSTRA MAP VIEW -->
+            <section id="view-referrals" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Inter-Hospital Referrals & Dijkstra Shortest Route Optimization</h2>
+                        <p>Graph theory based emergency transfer route calculation and interactive transit canvas.</p>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <!-- Referral Form -->
+                    <div class="card">
+                        <div class="card-title">Emergency Transfer Request</div>
+                        <div class="form-group">
+                            <label class="form-label" for="ref-patient-id">Patient ID *</label>
+                            <input type="text" id="ref-patient-id" class="form-control" placeholder="PAT-101">
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="ref-src-hospital">Source Hospital</label>
+                                <select id="ref-src-hospital" class="form-control"></select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="ref-dst-hospital">Destination Hospital</label>
+                                <select id="ref-dst-hospital" class="form-control"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="ref-bed-type">Required Specialty Bed</label>
+                            <select id="ref-bed-type" class="form-control">
+                                <option value="ICU">ICU (Intensive Care Unit)</option>
+                                <option value="VENTILATOR">Ventilator Bed</option>
+                                <option value="TRAUMA">Trauma Care Bed</option>
+                                <option value="GENERAL">General Inpatient</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions" style="justify-content:space-between;">
+                            <button type="button" id="ref-calc-route-btn" class="btn btn-navy">
+                                ⚡ Calculate Shortest Route
+                            </button>
+                            <button type="button" id="ref-create-btn" class="btn btn-primary">
+                                Approve & Dispatch Referral
+                            </button>
+                        </div>
+
+                        <!-- Dijkstra Route Output -->
+                        <div style="margin-top:16px; background:#EDF4FC; border:1px solid #D8E9FF; border-radius:6px; padding:12px;">
+                            <div style="font-size:11px; font-weight:700; color:var(--primary-navy); text-transform:uppercase;">Dijkstra Algorithm Calculation:</div>
+                            <div style="font-size:16px; font-weight:700; color:var(--primary-blue); margin:4px 0;" id="ref-calc-time">0 Minutes</div>
+                            <div style="font-size:12px; color:var(--text-main);" id="ref-calc-path">Select hospitals and click Calculate</div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Canvas Map -->
+                    <div class="card">
+                        <div class="card-title">Regional Healthcare Network Graph</div>
+                        <canvas id="hospital-map-canvas"></canvas>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:6px; text-align:center;">
+                            Weighted edges show emergency transit travel time in minutes. Blue path shows Dijkstra optimal route.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Referrals History -->
+                <div class="card">
+                    <div class="card-title">Recent Inter-Hospital Referrals</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Referral ID</th>
+                                    <th>Patient ID</th>
+                                    <th>Source Facility</th>
+                                    <th>Destination Facility</th>
+                                    <th>Travel Time</th>
+                                    <th>Transfer Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="referrals-table-tbody">
+                                <tr><td colspan="6" style="text-align:center;">Loading referrals...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. PATIENT HISTORY & AUDIT VIEW -->
+            <section id="view-history" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Clinical Audit Trail & Patient Event Ledger</h2>
+                        <p>Immutable history of patient registrations, medical consults, transfers, and discharges.</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" onclick="App.loadHistory()">Refresh Ledger</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">System Event Audit Ledger</div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Event Action</th>
+                                    <th>Patient ID</th>
+                                    <th>Performed By</th>
+                                    <th>Clinical Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-tbody">
+                                <tr><td colspan="5" style="text-align:center;">Loading audit ledger...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. REPORTS & STATISTICS VIEW -->
+            <section id="view-reports" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>Hospital Healthcare Analytics & Census Reports</h2>
+                        <p>Hospital throughput, average length of stay, and bed turnover statistics.</p>
+                    </div>
+                </div>
+
+                <div class="metrics-grid-4">
+                    <div class="metric-card metric-blue">
+                        <div class="metric-label">Total Treated Patients</div>
+                        <div class="metric-val" id="rep-total-treated">0</div>
+                        <div class="metric-sub">Cumulative Case Volume</div>
+                    </div>
+                    <div class="metric-card metric-teal">
+                        <div class="metric-label">Average Length of Stay (ALOS)</div>
+                        <div class="metric-val" id="rep-avg-los">0 Days</div>
+                        <div class="metric-sub">Inpatient Duration</div>
+                    </div>
+                    <div class="metric-card metric-green">
+                        <div class="metric-label">Bed Turnover Rate</div>
+                        <div class="metric-val" id="rep-bed-turnover">0%</div>
+                        <div class="metric-sub">Discharge / Bed Ratio</div>
+                    </div>
+                    <div class="metric-card metric-red">
+                        <div class="metric-label">Emergency Admission Ratio</div>
+                        <div class="metric-val" id="rep-emergency-ratio">0%</div>
+                        <div class="metric-sub">Critical Intake Percentage</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">Outpatient (OPD) vs Emergency Intake Ratio</div>
+                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+                        <span id="rep-opd-label" style="color:var(--primary-blue);">OPD Visits: 75%</span>
+                        <span id="rep-emg-label" style="color:var(--error-red);">Emergency Visits: 25%</span>
+                    </div>
+                    <div class="progress-bar-container" style="display:flex; height:24px;">
+                        <div id="rep-opd-bar" style="background:var(--primary-blue); width:75%; height:100%; transition:width 0.3s;"></div>
+                        <div id="rep-emg-bar" style="background:var(--error-red); width:25%; height:100%; transition:width 0.3s;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. SYSTEM SETTINGS VIEW -->
+            <section id="view-settings" class="view-section" style="display:none;">
+                <div class="page-header">
+                    <div>
+                        <h2>System Configuration & Database Settings</h2>
+                        <p>MySQL database connectivity, user account credentials, and platform architecture.</p>
+                    </div>
+                </div>
+
+                <div class="two-col-grid">
+                    <div class="card">
+                        <div class="card-title">MySQL Database Configuration</div>
+                        <div style="display:flex; flex-direction:column; gap:10px; font-size:13px; margin-bottom:14px;">
+                            <div>Database Host: <strong id="set-db-host">localhost</strong></div>
+                            <div>Database Port: <strong id="set-db-port">3306</strong></div>
+                            <div>Schema Name: <strong id="set-db-name">hospital_oop_db</strong></div>
+                            <div>Active Persistence State: <strong id="set-db-status" style="color:var(--primary-blue);">Checking...</strong></div>
+                        </div>
+                        <button id="set-test-db-btn" class="btn btn-navy">Test MySQL Connection</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">System Users & Access Roles</div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Access Role</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="set-users-tbody">
+                                    <tr><td colspan="4" style="text-align:center;">Loading users...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Patient Details Modal -->
+    <div id="modal-patient-details" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Patient Clinical Profile</h3>
+                <button class="modal-close" onclick="App.closeModal('modal-patient-details')">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-details-body">
+                Loading details...
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="App.closeModal('modal-patient-details')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Edit Demographics Modal -->
+    <div id="modal-patient-edit" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Edit Patient Demographics</h3>
+                <button class="modal-close" onclick="App.closeModal('modal-patient-edit')">&times;</button>
+            </div>
+            <form id="edit-patient-form">
+                <div class="modal-body">
+                    <input type="hidden" id="edit-patient-id">
+                    <div class="form-group">
+                        <label class="form-label" for="edit-fullname">Full Name *</label>
+                        <input type="text" id="edit-fullname" class="form-control" required>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="edit-age">Age *</label>
+                            <input type="number" id="edit-age" class="form-control" min="0" max="130" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="edit-gender">Gender</label>
+                            <select id="edit-gender" class="form-control">
+                                <option value="M">Male (M)</option>
+                                <option value="F">Female (F)</option>
+                                <option value="O">Other (O)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-contact">Contact Number</label>
+                        <input type="tel" id="edit-contact" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="edit-symptoms">Clinical Notes / Symptoms</label>
+                        <textarea id="edit-symptoms" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-patient-edit')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bed Allocation Modal -->
+    <div id="modal-bed-allocation" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Allocate Inpatient Bed</h3>
+                <button class="modal-close" onclick="App.closeModal('modal-bed-allocation')">&times;</button>
+            </div>
+            <form id="alloc-bed-form">
+                <div class="modal-body">
+                    <input type="hidden" id="alloc-request-id">
+                    <input type="hidden" id="alloc-patient-id">
+                    <div class="form-group">
+                        <label class="form-label" for="alloc-bed-select">Select Available Hospital Bed *</label>
+                        <select id="alloc-bed-select" class="form-control" required>
+                            <option value="">Loading beds...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-bed-allocation')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Confirm Bed Allocation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div id="modal-add-doctor" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Add Physician to Hospital Roster</h3>
+                <button class="modal-close" onclick="App.closeModal('modal-add-doctor')">&times;</button>
+            </div>
+            <form id="add-doctor-form">
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="doc-id">Doctor ID *</label>
+                            <input type="text" id="doc-id" class="form-control" placeholder="DOC-010" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="doc-name">Physician Full Name *</label>
+                            <input type="text" id="doc-name" class="form-control" placeholder="Dr. Sarah Jenkins" required>
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="doc-dept">Department *</label>
+                            <select id="doc-dept" class="form-control">
+                                <option value="General Medicine">General Medicine</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Orthopedics">Orthopedics</option>
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Emergency Medicine">Emergency Medicine</option>
+                                <option value="General Surgery">General Surgery</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="doc-hosp">Hospital Facility</label>
+                            <input type="text" id="doc-hosp" class="form-control" value="District Headquarters Hospital">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-add-doctor')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Physician</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Application Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
+
